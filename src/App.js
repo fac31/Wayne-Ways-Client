@@ -5,7 +5,7 @@ import Auth from './components/auth';
 
 function App() {
     return (
-        <div>
+        <div className="full-height">
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/authentication" element={<Auth />} />

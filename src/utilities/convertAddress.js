@@ -9,8 +9,7 @@ export const reverseGeocodeCoordinates = async (latitude, longitude) => {
             const result = data.results[0];
             console.log('Formatted Address:', result.formatted_address);
             console.log('Address Components:', result.address_components);
-            // return result.formatted_address;
-            localStorage.setItem('origin', result.formatted_address);
+            return result.formatted_address;
         } else {
             console.error('Error reverse geocoding coordinates:', data.status);
         }
