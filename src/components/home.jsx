@@ -8,7 +8,6 @@ export const Home = () => {
 
     const handleAddressSubmit = (newAddress) => {
         setAddress(newAddress);
-        console.log(newAddress); // This will log the new address object
     };
 
     const token = localStorage.getItem('token');

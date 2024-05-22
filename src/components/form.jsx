@@ -17,7 +17,6 @@ const Form = ({ onAddressSubmit }) => {
     const [input2, setInput2] = useState('');
     const [latitude, setLatitude] = useState(null);
     const [longitude, setLongitude] = useState(null);
-    const [currentLocation, setCurrentLocation] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,7 +32,6 @@ const Form = ({ onAddressSubmit }) => {
                     lat,
                     lng
                 );
-                setCurrentLocation(currentLocation);
                 setInput1(currentLocation);
             } catch (error) {
                 console.error('Error getting location:', error);
@@ -107,7 +105,6 @@ const Form = ({ onAddressSubmit }) => {
                         onChange={(e) => setInput1(e.target.value)}
                         type="text"
                         id="input1"
-                        // placeholder={currentLocation || 'Enter Origin'}
                         style={{
                             display: input2 ? 'block' : 'none',
                         }}

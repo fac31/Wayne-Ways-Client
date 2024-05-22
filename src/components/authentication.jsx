@@ -46,20 +46,17 @@ const Auth = () => {
             );
             const data = await response.json();
             if (response.status === 401 && password !== '') {
-                console.log(1);
                 setErrorMessage(data.message);
                 setTimeout(() => {
                     setErrorMessage('');
                 }, 5000);
             } else if (data.cause === 'email') {
-                console.log(2);
                 setErrorMessage(data.message);
                 setTimeout(() => {
                     setErrorMessage('');
                 }, 5000);
             } else if (data.cause === 'password') {
                 if (password === '') {
-                    console.log(3);
                     setUserFound(true);
                 }
             } else if (response.ok) {
@@ -84,7 +81,6 @@ const Auth = () => {
                 }),
             });
             const data = await response.json();
-            console.log(data.token);
             if (response.ok) {
                 localStorage.setItem('token', data.token);
                 window.location.href = '/';

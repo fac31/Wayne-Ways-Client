@@ -14,7 +14,6 @@ const MapComponent = ({ origin, destination }) => {
     const [currentLocation, setCurrentLocation] = useState(null);
     const [requestDirections, setRequestDirections] = useState(false);
     const [travelTime, setTravelTime] = useState(null);
-    // const [destination, setDestination] = useState(destination);
 
     const directionsCallback = useCallback((response) => {
         if (response !== null) {
@@ -76,8 +75,6 @@ const MapComponent = ({ origin, destination }) => {
             </div>
         );
     }
-
-    console.log(origin, destination);
 
     return (
         <GoogleMap
