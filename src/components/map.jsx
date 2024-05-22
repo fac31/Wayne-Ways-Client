@@ -66,7 +66,15 @@ const MapComponent = ({ origin, destination }) => {
     }, [currentLocation, destination]);
 
     if (!latitude || !longitude || !currentLocation) {
-        return <div>Loading...</div>;
+        return (
+            <div className="loading-container">
+                <img
+                    src="/batarang.png"
+                    alt="Loading"
+                    className="loading-image"
+                />
+            </div>
+        );
     }
 
     console.log(origin, destination);

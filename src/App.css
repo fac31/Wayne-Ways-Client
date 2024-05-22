@@ -205,3 +205,29 @@ body {
     color: rgb(228, 0, 232);
     margin-top: -0.5vh;
 }
+
+/* Loading Screen */
+
+@keyframes spinY {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
+}
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgb(0, 0, 0);
+}
+
+.loading-image {
+    background-color: rgba(255, 0, 0, 0.182);
+    width: 200px; /* Adjust size as needed */
+    animation: spinY 2s linear infinite;
+    box-shadow: red 0vh 0vh 10vh;
+}
