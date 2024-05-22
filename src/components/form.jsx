@@ -1,7 +1,10 @@
+// Form.js
+
 import React, { useState, useEffect } from 'react';
 import { useLoadScript, Autocomplete } from '@react-google-maps/api';
 import reverseGeocodeCoordinates from '../utilities/convertAddress';
 import getLocation from '../utilities/getLocation';
+import Favourites from './favourites';
 
 const libraries = ['places'];
 
@@ -13,7 +16,7 @@ const Form = ({ onAddressSubmit }) => {
 
     const [autocomplete1, setAutocomplete1] = useState(null);
     const [autocomplete2, setAutocomplete2] = useState(null);
-    const [input1, setInput1] = useState();
+    const [input1, setInput1] = useState('');
     const [input2, setInput2] = useState('');
     const [latitude, setLatitude] = useState(null);
     const [longitude, setLongitude] = useState(null);
@@ -47,19 +50,10 @@ const Form = ({ onAddressSubmit }) => {
         let place1 = autocomplete1 ? autocomplete1.getPlace() : null;
         let place2 = autocomplete2 ? autocomplete2.getPlace() : null;
 
-        if (
-            place1 &&
-            place1.formatted_address &&
-            place2 &&
-            place2.formatted_address
-        ) {
+        if (place1 && place1.formatted_address && place2 && input2) {
             onAddressSubmit({
                 origin: place1.formatted_address,
-                destination: place2.formatted_address,
-            });
-            console.log({
-                origin: place1.formatted_address,
-                destination: place2.formatted_address,
+                destination: input2,
             });
         } else {
             console.error(
@@ -91,10 +85,7 @@ const Form = ({ onAddressSubmit }) => {
     }
 
     return (
-        <div
-            id="form-container"
-            className={input2 ? 'form-variable' : 'grid-template'}
-        >
+        <div id="form-container">
             <form id={input2 ? 'grid-item-form-origin' : ''}>
                 <Autocomplete
                     onLoad={(autoC) => setAutocomplete1(autoC)}
@@ -105,9 +96,7 @@ const Form = ({ onAddressSubmit }) => {
                         onChange={(e) => setInput1(e.target.value)}
                         type="text"
                         id="input1"
-                        style={{
-                            display: input2 ? 'block' : 'none',
-                        }}
+                        style={{ display: input2 ? 'block' : 'none' }}
                     />
                 </Autocomplete>
             </form>
@@ -129,18 +118,7 @@ const Form = ({ onAddressSubmit }) => {
                 </Autocomplete>
                 <button id="submit-btn" type="submit"></button>
             </form>
-            <div id={input1 ? 'grid-item-recents-1' : 'grid-item-recents'}>
-                <h2 className="recents-title">Favourites</h2>
-                <div className="recents-container">
-                    <div className="recents-item-container">
-                        <div
-                            className="recents-item"
-                            id="recents-add-item"
-                        ></div>
-                        <p className="recent-items-text">Add</p>
-                    </div>
-                </div>
-            </div>
+            <Favourites input1={input1} />
         </div>
     );
 };

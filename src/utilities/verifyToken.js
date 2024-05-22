@@ -7,8 +7,9 @@ export const verifyToken = async (token) => {
                 Authorization: `Bearer ${token}`,
             },
         });
+        const data = await response.json();
         if (response.ok) {
-            return;
+            return data.userId;
         } else {
             localStorage.removeItem('token');
             window.location.href = 'authentication';

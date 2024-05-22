@@ -32,6 +32,7 @@ body {
     display: grid;
     background-color: rgba(238, 238, 238, 0.983);
     padding: 1vmin;
+    height: 30%;
 }
 
 .form-variable {
@@ -74,6 +75,26 @@ body {
     background-color: rgb(204, 204, 204);
 }
 
+.add-inputs-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 1vh;
+}
+
+.add-input-btn {
+    border: none;
+}
+
+.input {
+    width: 35vh;
+    padding: 1.5vmin;
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(204, 204, 204);
+}
+
 #input2 {
     margin-top: 1vh;
     width: 35vh;
@@ -108,10 +129,10 @@ body {
 
 #grid-item-recents-1 {
     grid-column: 1 / span 8;
-    grid-row: 3 / span 5;
+    grid-row: 3 / span 6;
     display: flex;
     flex-direction: column;
-    padding: 5vmin 2.5vmin 0 2.5vmin;
+    padding: 2vmin 2.5vmin 0 2.5vmin;
 }
 
 .recents-title {
@@ -146,7 +167,7 @@ body {
 
 .recents-item-container {
     margin: 0.5vh 0 0 3vw;
-    height: 85%;
+    height: 100%;
     width: 25%;
     display: flex;
     flex-direction: column;
