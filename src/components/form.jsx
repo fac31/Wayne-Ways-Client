@@ -13,7 +13,7 @@ const Form = ({ onAddressSubmit }) => {
 
     const [autocomplete1, setAutocomplete1] = useState(null);
     const [autocomplete2, setAutocomplete2] = useState(null);
-    const [input1, setInput1] = useState('');
+    const [input1, setInput1] = useState();
     const [input2, setInput2] = useState('');
     const [latitude, setLatitude] = useState(null);
     const [longitude, setLongitude] = useState(null);
@@ -34,6 +34,7 @@ const Form = ({ onAddressSubmit }) => {
                     lng
                 );
                 setCurrentLocation(currentLocation);
+                setInput1(currentLocation);
             } catch (error) {
                 console.error('Error getting location:', error);
             }
@@ -106,7 +107,7 @@ const Form = ({ onAddressSubmit }) => {
                         onChange={(e) => setInput1(e.target.value)}
                         type="text"
                         id="input1"
-                        placeholder={currentLocation || 'Enter Origin'}
+                        // placeholder={currentLocation || 'Enter Origin'}
                         style={{
                             display: input2 ? 'block' : 'none',
                         }}
@@ -132,7 +133,7 @@ const Form = ({ onAddressSubmit }) => {
                 <button id="submit-btn" type="submit"></button>
             </form>
             <div id={input1 ? 'grid-item-recents-1' : 'grid-item-recents'}>
-                <h2 className="recents-title">Recents</h2>
+                <h2 className="recents-title">Favourites</h2>
                 <div className="recents-container">
                     <div className="recents-item-container">
                         <div

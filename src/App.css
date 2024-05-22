@@ -13,7 +13,13 @@ body {
 
 .eta {
     position: relative;
-    margin: 4vh;
+    margin-top: 140%;
+    margin-left: 4vw;
+    background-color: rgba(238, 238, 238, 0.983);
+    width: fit-content;
+    height: auto;
+    font-size: 5vmin;
+    padding: 0.75vmin;
 }
 
 .grid-template {
@@ -99,13 +105,6 @@ body {
     flex-direction: column;
     padding: 2.5vmin 2.5vmin 0 2.5vmin;
 }
-#grid-item-recents {
-    grid-column: 1 / span 8;
-    grid-row: 3 / span 5;
-    display: flex;
-    flex-direction: column;
-    padding: 2.5vmin 2.5vmin 0 2.5vmin;
-}
 
 #grid-item-recents-1 {
     grid-column: 1 / span 8;
@@ -123,7 +122,7 @@ body {
 
 .recents-container {
     /* border: 2px black solid; */
-    height: 70%;
+    height: 80%;
     border-radius: 10px;
     background-color: white;
     display: flex;

@@ -90,9 +90,7 @@ const MapComponent = ({ origin, destination }) => {
                 />
             )}
             {response && <DirectionsRenderer directions={response} />}
-            <div className="eta">
-                <h2>Estimated Travel Time: {travelTime}</h2>
-            </div>
+            {travelTime && <div className="eta">ETA {travelTime}</div>}
         </GoogleMap>
     );
 };
