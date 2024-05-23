@@ -7,29 +7,36 @@ import {
 import getLocation from '../utilities/getLocation';
 import reverseGeocodeCoordinates from '../utilities/convertAddress';
 
-const MapComponent = ({ origin, destination }) => {
+const MapComponent = ({ origin, destination, onDirectionsUpdate }) => {
     const [response, setResponse] = useState(null);
     const [latitude, setLatitude] = useState(null);
     const [longitude, setLongitude] = useState(null);
     const [currentLocation, setCurrentLocation] = useState(null);
     const [requestDirections, setRequestDirections] = useState(false);
-    const [travelTime, setTravelTime] = useState(null);
+    const [travelMode, setTravelMode] = useState('DRIVING');
 
-    const directionsCallback = useCallback((response) => {
-        if (response !== null) {
-            if (response.status === 'OK') {
-                setResponse(response);
-                const route = response.routes[0];
-                const leg = route.legs[0];
-                const duration = leg.duration.text;
-                setTravelTime(duration);
-            } else {
-                console.log(
-                    'Directions request failed due to ' + response.status
-                );
+    const directionsCallback = useCallback(
+        (response) => {
+            if (response !== null) {
+                if (response.status === 'OK') {
+                    setResponse(response);
+                    const route = response.routes[0];
+                    const leg = route.legs[0];
+                    onDirectionsUpdate({
+                        travelTime: leg.duration.text,
+                        distance: leg.distance.text,
+                        steps: leg.steps.map((step) => step.instructions),
+                        warnings: route.warnings,
+                    });
+                } else {
+                    console.log(
+                        'Directions request failed due to ' + response.status
+                    );
+                }
             }
-        }
-    }, []);
+        },
+        [onDirectionsUpdate]
+    );
 
     useEffect(() => {
         const fetchData = async () => {
@@ -77,26 +84,42 @@ const MapComponent = ({ origin, destination }) => {
     }
 
     return (
-        <GoogleMap
-            id="direction-example"
-            mapContainerStyle={{ height: '65%', width: '100%' }}
-            zoom={18}
-            center={{ lat: latitude, lng: longitude }}
-        >
-            {requestDirections && (
-                <DirectionsService
-                    options={{
-                        destination: destination,
-                        origin: origin,
-                        travelMode: 'DRIVING',
-                    }}
-                    callback={directionsCallback}
-                    onLoad={() => setRequestDirections(false)}
-                />
+        <>
+            {origin && destination ? (
+                <div className="top-strip">
+                    <p id="strip-p">Your location -- {destination}</p>
+                </div>
+            ) : (
+                ''
             )}
-            {response && <DirectionsRenderer directions={response} />}
-            {travelTime && <div className="eta">ETA {travelTime}</div>}
-        </GoogleMap>
+
+            <GoogleMap
+                id="direction-example"
+                mapContainerStyle={{
+                    height: '65%',
+                    width: '100%',
+                    zIndex: '0',
+                }}
+                zoom={18}
+                center={{ lat: latitude, lng: longitude }}
+                options={{
+                    trafficControl: true,
+                }}
+            >
+                {requestDirections && (
+                    <DirectionsService
+                        options={{
+                            destination: destination,
+                            origin: origin,
+                            travelMode: travelMode,
+                        }}
+                        callback={directionsCallback}
+                        onLoad={() => setRequestDirections(false)}
+                    />
+                )}
+                {response && <DirectionsRenderer directions={response} />}
+            </GoogleMap>
+        </>
     );
 };
 

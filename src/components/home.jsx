@@ -5,9 +5,21 @@ import verifyToken from '../utilities/verifyToken';
 
 export const Home = () => {
     const [address, setAddress] = useState({ origin: '', destination: '' });
+    const [directionsData, setDirectionsData] = useState({
+        travelTime: null,
+        distance: null,
+        steps: [],
+        warnings: [],
+    });
+
+    const handleDirectionsUpdate = (data) => {
+        setDirectionsData(data);
+        console.log(directionsData);
+    };
 
     const handleAddressSubmit = (newAddress) => {
         setAddress(newAddress);
+        console.log(newAddress);
     };
 
     const token = localStorage.getItem('token');
@@ -18,8 +30,13 @@ export const Home = () => {
             <MapComponent
                 origin={address.origin}
                 destination={address.destination}
+                onDirectionsUpdate={handleDirectionsUpdate}
             />
-            <Form onAddressSubmit={handleAddressSubmit} />
+            <Form
+                onAddressSubmit={handleAddressSubmit}
+                directionsData={directionsData}
+                destination={address.destination}
+            />
         </div>
     );
 };
