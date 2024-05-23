@@ -79,7 +79,7 @@ const MapComponent = ({ origin, destination }) => {
     return (
         <GoogleMap
             id="direction-example"
-            mapContainerStyle={{ height: '70%', width: '100%' }}
+            mapContainerStyle={{ height: '65%', width: '100%' }}
             zoom={18}
             center={{ lat: latitude, lng: longitude }}
         >

@@ -25,14 +25,15 @@ body {
 .grid-template {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(8, 1fr);
+    grid-template-rows: repeat(9, 1fr);
 }
 
 #form-container {
     display: grid;
     background-color: rgba(238, 238, 238, 0.983);
     padding: 1vmin;
-    height: 30%;
+    height: 35%;
+    width: 100vw;
 }
 
 .form-variable {
@@ -121,18 +122,18 @@ body {
 
 #grid-item-recents {
     grid-column: 1 / span 8;
-    grid-row: 3 / span 5;
+    grid-row: 4 / span 5;
     display: flex;
     flex-direction: column;
-    padding: 2.5vmin 2.5vmin 0 2.5vmin;
+    padding: 0 2.5vmin 0 2.5vmin;
 }
 
 #grid-item-recents-1 {
     grid-column: 1 / span 8;
-    grid-row: 3 / span 6;
+    grid-row: 4 / span 5;
     display: flex;
     flex-direction: column;
-    padding: 2vmin 2.5vmin 0 2.5vmin;
+    padding: 0vmin 2.5vmin 0 2.5vmin;
 }
 
 .recents-title {
@@ -142,20 +143,26 @@ body {
 }
 
 .recents-container {
-    /* border: 2px black solid; */
     height: 80%;
     border-radius: 10px;
     background-color: white;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: row;
+    overflow-x: auto;
+    white-space: nowrap;
+    max-width: 92vw;
+    padding: 10px;
 }
 
 .recents-item {
-    height: 70%;
-    width: 80%;
+    height: 60%;
+    width: 70%;
     border-radius: 50%;
     background-color: rgba(238, 238, 238, 0.983);
+}
+
+.recents-item:hover {
+    background-color: rgb(181, 181, 181);
 }
 
 #recents-add-item {
@@ -165,10 +172,26 @@ body {
     background-position: center;
 }
 
+.favs-img {
+    background-image: url('../public/bin.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.bin-img {
+    height: 2vh;
+    width: 2vh;
+}
+
+.bin-img:hover {
+    background-color: rgb(181, 181, 181);
+}
+
 .recents-item-container {
     margin: 0.5vh 0 0 3vw;
     height: 100%;
-    width: 25%;
+    min-width: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;

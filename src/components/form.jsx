@@ -1,5 +1,3 @@
-// Form.js
-
 import React, { useState, useEffect } from 'react';
 import { useLoadScript, Autocomplete } from '@react-google-maps/api';
 import reverseGeocodeCoordinates from '../utilities/convertAddress';
@@ -50,10 +48,15 @@ const Form = ({ onAddressSubmit }) => {
         let place1 = autocomplete1 ? autocomplete1.getPlace() : null;
         let place2 = autocomplete2 ? autocomplete2.getPlace() : null;
 
-        if (place1 && place1.formatted_address && place2 && input2) {
+        if (
+            place1 &&
+            place1.formatted_address &&
+            place2 &&
+            place2.formatted_address
+        ) {
             onAddressSubmit({
                 origin: place1.formatted_address,
-                destination: input2,
+                destination: place2.formatted_address,
             });
         } else {
             console.error(
@@ -76,6 +79,10 @@ const Form = ({ onAddressSubmit }) => {
         }
     };
 
+    const handleFavouriteSelect = (address) => {
+        setInput2(address); // Set the selected favourite address to input2
+    };
+
     if (loadError) {
         return <div>Error loading maps</div>;
     }
@@ -85,7 +92,10 @@ const Form = ({ onAddressSubmit }) => {
     }
 
     return (
-        <div id="form-container">
+        <div
+            id="form-container"
+            className={input2 ? 'form-variable' : 'grid-template'}
+        >
             <form id={input2 ? 'grid-item-form-origin' : ''}>
                 <Autocomplete
                     onLoad={(autoC) => setAutocomplete1(autoC)}
@@ -96,7 +106,9 @@ const Form = ({ onAddressSubmit }) => {
                         onChange={(e) => setInput1(e.target.value)}
                         type="text"
                         id="input1"
-                        style={{ display: input2 ? 'block' : 'none' }}
+                        style={{
+                            display: input2 ? 'block' : 'none',
+                        }}
                     />
                 </Autocomplete>
             </form>
@@ -118,7 +130,10 @@ const Form = ({ onAddressSubmit }) => {
                 </Autocomplete>
                 <button id="submit-btn" type="submit"></button>
             </form>
-            <Favourites input1={input1} />
+            <Favourites
+                input1={input1}
+                onFavouriteSelect={handleFavouriteSelect}
+            />
         </div>
     );
 };

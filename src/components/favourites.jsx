@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Autocomplete } from '@react-google-maps/api';
 import verifyToken from '../utilities/verifyToken';
 
-export const Favourites = ({ input1 }) => {
+export const Favourites = ({ input1, onFavouriteSelect }) => {
     const token = localStorage.getItem('token');
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [addingFavourite, setAddingFavourite] = useState(false);
-    const [favourites, setFavourites] = useState(false);
+    const [favourites, setFavourites] = useState([]);
     const [autocomplete, setAutocomplete] = useState(null);
 
     useEffect(() => {
@@ -31,7 +31,7 @@ export const Favourites = ({ input1 }) => {
         };
 
         getFavourites();
-    }, []);
+    }, [favourites]);
 
     const handlePlaceChanged = () => {
         const place = autocomplete.getPlace();
@@ -59,6 +59,30 @@ export const Favourites = ({ input1 }) => {
             );
             const data = await response.json();
             setAddingFavourite(false);
+            setFavourites([...favourites, data]);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const deleteFav = async (fav) => {
+        try {
+            const userId = await verifyToken(token);
+            const response = await fetch(
+                `http://localhost:4000/favourites/one`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        name: fav.name,
+                    }),
+                }
+            );
+            const data = await response.json();
+            console.log(data);
         } catch (error) {
             console.log(error);
         }
@@ -89,20 +113,30 @@ export const Favourites = ({ input1 }) => {
                                 onChange={(e) => setAddress(e.target.value)}
                             />
                         </Autocomplete>
-
                         <button onClick={() => addFavourite()}>Add</button>
                     </div>
                 ) : (
                     <>
                         {favourites &&
                             favourites.map((fav) => (
-                                <div className="recents-item-container">
+                                <div
+                                    key={fav.id}
+                                    className="recents-item-container"
+                                >
                                     <div
                                         className="recents-item"
-                                        id="recents-add-item"
+                                        onClick={() =>
+                                            onFavouriteSelect(fav.address)
+                                        }
                                     ></div>
                                     <p className="recent-items-text">
                                         {fav.name}
+                                        <img
+                                            onClick={() => deleteFav(fav)}
+                                            src="/bin.png"
+                                            alt="bin"
+                                            className="bin-img"
+                                        />
                                     </p>
                                 </div>
                             ))}
