@@ -92,6 +92,12 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
         });
     };
 
+    const startJourney = () => {
+        localStorage.setItem('origin', input1);
+        localStorage.setItem('destination', input2);
+        window.location.href = '/journey';
+    };
+
     return (
         <>
             {!StartingJourney ? (
@@ -174,7 +180,9 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
                         <button id="go-back-btn" onClick={() => goBack()}>
                             Go back
                         </button>
-                        <button id="go-btn">Start Journey</button>
+                        <button id="go-btn" onClick={() => startJourney()}>
+                            Start Journey
+                        </button>
                     </div>
                 </div>
             )}

@@ -92,7 +92,7 @@ body {
 }
 
 .distance-container {
-    grid-column: 7 / span 1;
+    grid-column: 7 / span 2;
     grid-row: 2 / span 1;
     margin-top: 1vh;
     font-weight: 500;

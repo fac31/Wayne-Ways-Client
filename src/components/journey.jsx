@@ -5,9 +5,11 @@ import {
     DirectionsRenderer,
 } from '@react-google-maps/api';
 import getLocation from '../utilities/getLocation';
+import formatTime from '../utilities/formatTime';
+import addMinutesToTime from '../utilities/addMinutesToTime';
 
 const mapContainerStyle = {
-    height: '100%',
+    height: '87.5%',
     width: '100%',
 };
 
@@ -16,70 +18,53 @@ const options = {
     mapTypeId: 'roadmap',
     trafficControl: true,
     styles: [
-        // {
-        //     featureType: 'all',
-        //     elementType: 'geometry',
-        //     stylers: [
-        //         { color: '#1a1a1a' }, // Dark background color
-        //     ],
-        // },
         {
             featureType: 'landscape',
             elementType: 'geometry',
-            stylers: [
-                { color: '#333333' }, // Dark landscape color
-            ],
+            stylers: [{ color: '#333333' }],
         },
         {
             featureType: 'road',
             elementType: 'geometry',
-            stylers: [
-                { color: '#666666' }, // Dark road color
-            ],
+            stylers: [{ color: '#666666' }],
         },
         {
             featureType: 'poi',
             elementType: 'geometry',
-            stylers: [
-                { color: '#1a1a1a' }, // Dark POI color
-            ],
+            stylers: [{ color: '#1a1a1a' }],
         },
         {
             featureType: 'poi',
             elementType: 'labels.text.fill',
-            stylers: [
-                { color: '#00000' },
-                { weight: 'thin' }, // Light text color for POI labels
-            ],
+            stylers: [{ color: '#ffffff' }, { weight: 'thin' }],
         },
         {
             featureType: 'poi.park',
             elementType: 'geometry',
-            stylers: [
-                { color: '#004d00' }, // Dark color for parks
-            ],
+            stylers: [{ color: '#004d00' }],
         },
         {
             featureType: 'water',
             elementType: 'geometry',
-            stylers: [
-                { color: '#000033' }, // Dark water color
-            ],
+            stylers: [{ color: '#000033' }],
         },
         {
             featureType: 'transit',
             elementType: 'geometry',
-            stylers: [
-                { color: '#000000' }, // Dark color for transit lines
-            ],
+            stylers: [{ color: '#000000' }],
         },
     ],
 };
 
 const Journey = () => {
+    const destination = localStorage.getItem('destination');
+    const origin = localStorage.getItem('origin');
     const [currentLocation, setCurrentLocation] = useState(null);
     const [directions, setDirections] = useState(null);
     const [marker, setMarker] = useState(null);
+    const [remainingDistance, setRemainingDistance] = useState(null);
+    const [remainingTime, setRemainingTime] = useState(null);
+    const directionsRendererRef = useRef(null);
     const mapRef = useRef(null);
 
     useEffect(() => {
@@ -95,7 +80,7 @@ const Journey = () => {
         };
 
         fetchData();
-    }, []);
+    }, [currentLocation]);
 
     useEffect(() => {
         if (currentLocation && mapRef.current) {
@@ -108,7 +93,7 @@ const Journey = () => {
                     title: 'Current Location',
                     icon: {
                         url: 'https://i.postimg.cc/WbgWHH2k/76139-Top-removebg-preview.png',
-                        scaledSize: new window.google.maps.Size(90, 50), // Adjust size if needed
+                        scaledSize: new window.google.maps.Size(90, 50),
                     },
                 });
                 setMarker(newMarker);
@@ -118,16 +103,129 @@ const Journey = () => {
         }
     }, [currentLocation, marker]);
 
-    const directionsCallback = (response, status) => {
-        if (status === 'OK') {
+    const directionsCallback = (response) => {
+        if (response !== null && response.status === 'OK') {
             setDirections(response);
-        } else {
-            console.error('Directions request failed due to ' + status);
+            if (directionsRendererRef.current) {
+                const directionsRenderer = directionsRendererRef.current;
+                directionsRenderer.setDirections(response);
+
+                const route = response.routes[0];
+                const leg = route.legs[0];
+            }
         }
     };
 
+    const getClosestPoint = (path, currentLocation) => {
+        let closestPoint = null;
+        let closestDistance = Infinity;
+
+        for (let i = 0; i < path.length; i++) {
+            const point = path[i];
+            const distance =
+                window.google.maps.geometry.spherical.computeDistanceBetween(
+                    new window.google.maps.LatLng(point.lat(), point.lng()),
+                    new window.google.maps.LatLng(
+                        currentLocation.lat,
+                        currentLocation.lng
+                    )
+                );
+
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestPoint = point;
+            }
+        }
+
+        return closestPoint;
+    };
+
+    const splitRoute = (path, currentLocation) => {
+        const closestPoint = getClosestPoint(path, currentLocation);
+        const closestIndex = path.findIndex(
+            (point) =>
+                point.lat() === closestPoint.lat() &&
+                point.lng() === closestPoint.lng()
+        );
+
+        const pastPath = path.slice(0, closestIndex + 1);
+        const futurePath = path.slice(closestIndex);
+
+        return { pastPath, futurePath };
+    };
+
+    const calculateRemainingDistanceAndTime = (leg, currentLocation) => {
+        const path = leg.steps.flatMap((step) =>
+            window.google.maps.geometry.encoding.decodePath(
+                step.polyline.points
+            )
+        );
+        const { futurePath } = splitRoute(path, currentLocation);
+
+        let remainingDistance = 0;
+        let remainingTime = 0;
+
+        futurePath.forEach((point, index) => {
+            if (index < futurePath.length - 1) {
+                const nextPoint = futurePath[index + 1];
+                remainingDistance +=
+                    window.google.maps.geometry.spherical.computeDistanceBetween(
+                        new window.google.maps.LatLng(point.lat(), point.lng()),
+                        new window.google.maps.LatLng(
+                            nextPoint.lat(),
+                            nextPoint.lng()
+                        )
+                    );
+            }
+        });
+
+        leg.steps.forEach((step) => {
+            const stepStartPoint = new window.google.maps.LatLng(
+                step.start_location.lat(),
+                step.start_location.lng()
+            );
+            if (
+                window.google.maps.geometry.spherical.computeDistanceBetween(
+                    stepStartPoint,
+                    new window.google.maps.LatLng(
+                        currentLocation.lat,
+                        currentLocation.lng
+                    )
+                ) < 50
+            ) {
+                remainingTime = step.duration.value;
+            }
+        });
+
+        setRemainingDistance(remainingDistance / 1000); // Convert to kilometers
+        setRemainingTime(remainingTime / 60); // Convert to minutes
+    };
+
+    useEffect(() => {
+        if (directions && currentLocation) {
+            const route = directions.routes[0];
+            const leg = route.legs[0];
+            calculateRemainingDistanceAndTime(leg, currentLocation);
+        }
+    }, [directions, currentLocation]);
+
+    const now = new Date();
+    const formattedTime = formatTime(now);
+
+    if (!currentLocation) {
+        return (
+            <div className="loading-container">
+                <img
+                    src="/batarang.png"
+                    alt="Loading"
+                    className="loading-image"
+                />
+            </div>
+        );
+    }
+
     return (
-        <div className="full-height">
+        <div className="full-height" style={{ backgroundColor: 'black' }}>
             <GoogleMap
                 id="direction-example"
                 mapContainerStyle={mapContainerStyle}
@@ -141,26 +239,116 @@ const Journey = () => {
                 {marker && marker.setMap(mapRef.current.state.map)}
                 <DirectionsService
                     options={{
-                        destination: 'London HA9 0WS, UK',
-                        origin: '1 Brent Cross Gardens, London NW4 3AJ, UK',
+                        destination: destination,
+                        origin: origin,
                         travelMode: 'DRIVING',
                     }}
                     callback={directionsCallback}
                 />
-                {directions && (
-                    <DirectionsRenderer
-                        directions={directions}
-                        options={{
-                            preserveViewport: true,
-                            polylineOptions: {
-                                strokeColor: 'red', // Set line color
-                                strokeOpacity: 1, // Set line opacity
-                                strokeWeight: 7, // Set line thickness
-                            },
-                        }}
-                    />
-                )}
+                {directions &&
+                    currentLocation &&
+                    (() => {
+                        const route = directions.routes[0];
+                        const leg = route.legs[0];
+                        const path = leg.steps.flatMap((step) =>
+                            window.google.maps.geometry.encoding.decodePath(
+                                step.polyline.points
+                            )
+                        );
+                        const { pastPath, futurePath } = splitRoute(
+                            path,
+                            currentLocation
+                        );
+
+                        return (
+                            <>
+                                <DirectionsRenderer
+                                    options={{
+                                        preserveViewport: true,
+                                        polylineOptions: {
+                                            strokeColor: 'blue',
+                                            strokeOpacity: 0.7,
+                                            strokeWeight: 7,
+                                        },
+                                        suppressMarkers: true,
+                                        directions: {
+                                            ...directions,
+                                            routes: [
+                                                {
+                                                    ...route,
+                                                    overview_polyline:
+                                                        window.google.maps.geometry.encoding.encodePath(
+                                                            pastPath
+                                                        ),
+                                                },
+                                            ],
+                                        },
+                                    }}
+                                />
+                                <DirectionsRenderer
+                                    options={{
+                                        preserveViewport: true,
+                                        polylineOptions: {
+                                            strokeColor: 'red',
+                                            strokeOpacity: 1,
+                                            strokeWeight: 7,
+                                        },
+                                        suppressMarkers: true,
+                                        directions: {
+                                            ...directions,
+                                            routes: [
+                                                {
+                                                    ...route,
+                                                    overview_polyline:
+                                                        window.google.maps.geometry.encoding.encodePath(
+                                                            futurePath
+                                                        ),
+                                                },
+                                            ],
+                                        },
+                                    }}
+                                />
+                            </>
+                        );
+                    })()}
             </GoogleMap>
+            {remainingDistance !== null && remainingTime !== null && (
+                <div
+                    style={{
+                        height: '12.5%',
+                        background: '#333333',
+                        padding: '10px',
+                        color: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        borderTopLeftRadius: '10px',
+                        borderTopRightRadius: '10px',
+                    }}
+                >
+                    <div
+                        style={{
+                            fontSize: '7vmin',
+                            fontWeight: '900',
+                        }}
+                    >
+                        {addMinutesToTime(
+                            formattedTime,
+                            parseInt(parseFloat(remainingTime.toFixed(2)) * 100)
+                        )}
+                    </div>
+                    <div
+                        style={{
+                            fontWeight: '600',
+                            fontSize: '4.5vmin',
+                        }}
+                    >
+                        {parseInt(parseFloat(remainingTime.toFixed(2)) * 100)}{' '}
+                        mins {'    ---   '}
+                        {parseInt(remainingDistance.toFixed(2))} km
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
