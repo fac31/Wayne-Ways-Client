@@ -330,6 +330,12 @@ body {
     margin-top: -0.5vh;
 }
 
+.route-directions-container {
+    height: 10%;
+    background-color: whitesmoke;
+    color: black;
+}
+
 /* Loading Screen */
 
 @keyframes spinY {

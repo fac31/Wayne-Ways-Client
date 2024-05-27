@@ -9,7 +9,7 @@ import formatTime from '../utilities/formatTime';
 import addMinutesToTime from '../utilities/addMinutesToTime';
 
 const mapContainerStyle = {
-    height: '87.5%',
+    height: '77.5%',
     width: '100%',
 };
 
@@ -61,6 +61,8 @@ const Journey = () => {
     const origin = localStorage.getItem('origin');
     const [currentLocation, setCurrentLocation] = useState(null);
     const [directions, setDirections] = useState(null);
+    const [index, setIndex] = useState(0);
+    const [step, setStep] = useState(null);
     const [marker, setMarker] = useState(null);
     const [remainingDistance, setRemainingDistance] = useState(null);
     const [remainingTime, setRemainingTime] = useState(null);
@@ -80,7 +82,7 @@ const Journey = () => {
         };
 
         fetchData();
-    }, [currentLocation]);
+    }, []);
 
     useEffect(() => {
         if (currentLocation && mapRef.current) {
@@ -101,7 +103,7 @@ const Journey = () => {
                 marker.setPosition(currentLocation);
             }
         }
-    }, [currentLocation, marker]);
+    }, []);
 
     const directionsCallback = (response) => {
         if (response !== null && response.status === 'OK') {
@@ -224,8 +226,17 @@ const Journey = () => {
         );
     }
 
+    if (directions) {
+        const directionSteps = directions.routes[0].legs[0].steps;
+
+        // setStep(directionSteps[index]);
+    }
+
     return (
         <div className="full-height" style={{ backgroundColor: 'black' }}>
+            <div className="route-directions-container">
+                <div className="route-directions"></div>
+            </div>
             <GoogleMap
                 id="direction-example"
                 mapContainerStyle={mapContainerStyle}

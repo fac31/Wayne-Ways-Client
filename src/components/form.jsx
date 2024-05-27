@@ -27,6 +27,7 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
                     lat,
                     lng
                 );
+
                 setInput1(currentLocation);
             } catch (error) {
                 console.error('Error getting location:', error);
@@ -41,6 +42,12 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
         event.preventDefault();
         let place1 = autocomplete1 ? autocomplete1.getPlace() : null;
         let place2 = autocomplete2 ? autocomplete2.getPlace() : null;
+
+        if (!place1) {
+            place1 = { formatted_address: input1 };
+        }
+
+        console.log(input1, place1, place2);
 
         if (
             place1 &&
@@ -162,7 +169,7 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
                         <p>Best route, typical traffic</p>
                         {directionsData &&
                             directionsData.warning?.length > 0 &&
-                            directionsData.warning.map((dir, index) => {
+                            directionsData.warning.map((dir, index) => (
                                 <p id={index} className="warnings">
                                     <img
                                         src="/warning.png"
@@ -170,8 +177,8 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
                                         className="warning-img"
                                     />
                                     {directionsData.warning[index]}
-                                </p>;
-                            })}
+                                </p>
+                            ))}
                     </div>
                     <div className="distance-container">
                         {directionsData.distance}

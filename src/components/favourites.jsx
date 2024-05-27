@@ -120,7 +120,7 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
                         {favourites &&
                             favourites.map((fav) => (
                                 <div
-                                    key={fav.id}
+                                    key={fav._id}
                                     className="recents-item-container"
                                 >
                                     <div
