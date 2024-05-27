@@ -3,6 +3,7 @@ import { Autocomplete } from '@react-google-maps/api';
 import reverseGeocodeCoordinates from '../utilities/convertAddress';
 import getLocation from '../utilities/getLocation';
 import Favourites from './favourites';
+import { History } from './history';
 
 const Form = ({ onAddressSubmit, directionsData, destination }) => {
     const [autocomplete1, setAutocomplete1] = useState(null);
@@ -150,6 +151,7 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
                         input1={input1}
                         onFavouriteSelect={handleFavouriteSelect}
                     />
+                    <History onHistorySelect={handleFavouriteSelect} />
                 </div>
             ) : (
                 <div className="grid-template" id="start-journey">
