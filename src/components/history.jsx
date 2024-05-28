@@ -29,17 +29,17 @@ export const History = ({onHistorySelect, historyList, setHistoryList}) => {
 
 
     return (
-        <div id="grid-item-history">
+        <div id="history">
             <h2 className="recents-title">History</h2>
             <div className="history-container">
                 {historyList && 
                     historyList.map((his) => (
                         <div 
                             key={his._id}
-                            className="recents-item-container"
+                            className="saved-item-container"
                         >
                             <div 
-                                className="recents-item" 
+                                className="saved-item" 
                                 onClick={() => 
                                     onHistorySelect(his.address)
                                 }
