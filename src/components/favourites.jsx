@@ -89,7 +89,7 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
     };
 
     return (
-        <div id={input1 ? 'grid-item-recents-1' : 'grid-item-recents'}>
+        <div id={input1 ? 'favourites-1' : 'favourites-2'}>
             <h2 className="recents-title">Favourites</h2>
             <div className="recents-container">
                 {addingFavourite ? (
@@ -121,10 +121,11 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
                             favourites.map((fav) => (
                                 <div
                                     key={fav._id}
-                                    className="recents-item-container"
+                                    className="saved-item-container"
                                 >
                                     <div
-                                        className="recents-item"
+                                        className="saved-item"
+                                        id='fav-item'
                                         onClick={() =>
                                             onFavouriteSelect(fav.address)
                                         }
@@ -141,12 +142,12 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
                                 </div>
                             ))}
                         <div
-                            className="recents-item-container"
+                            className="saved-item-container"
                             onClick={() => setAddingFavourite(true)}
                         >
                             <div
-                                className="recents-item"
-                                id="recents-add-item"
+                                className="saved-item"
+                                id="fav-add-item"
                             ></div>
                             <p className="recent-items-text">Add</p>
                         </div>

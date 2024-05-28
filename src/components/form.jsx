@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Autocomplete } from '@react-google-maps/api';
+import verifyToken from '../utilities/verifyToken';
 import reverseGeocodeCoordinates from '../utilities/convertAddress';
 import getLocation from '../utilities/getLocation';
 import Favourites from './favourites';
+import { History } from './history';
 
 const Form = ({ onAddressSubmit, directionsData, destination }) => {
     const [autocomplete1, setAutocomplete1] = useState(null);
@@ -12,6 +14,8 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
     const [latitude, setLatitude] = useState(null);
     const [longitude, setLongitude] = useState(null);
     const [StartingJourney, setStartingJourney] = useState(false);
+    const [historyList, setHistoryList] = useState([]);
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,6 +40,7 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
         if (!latitude && !longitude) {
             fetchData();
         }
+
     }, [latitude, longitude]);
 
     const handleSubmit = (event) => {
@@ -47,7 +52,7 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
             place1 = { formatted_address: input1 };
         }
 
-        console.log(input1, place1, place2);
+        console.log("input1", input1, "place1", place1, "place2", place2);
 
         if (
             place1 &&
@@ -60,12 +65,80 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
                 destination: place2.formatted_address,
             });
             setStartingJourney(true);
+
+            if (historyList.length <= 6 ) {
+                addToHistory(place2.formatted_address)
+            } 
+            else { 
+                removeOldestFromHistory() 
+                addToHistory(place2.formatted_address)
+            }
+            
         } else {
             console.error(
                 'Both places must be selected and have valid addresses.'
             );
         }
+
+
     };
+
+    const addToHistory = async (address) => {
+        try {
+            const userId = await verifyToken(token)
+            const response = await fetch(
+                `http://localhost:4000/history/add`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        address: address,
+                        date: Date.now()
+                    }),
+                }                
+            );
+            const data = await response.json()
+            setHistoryList([...historyList, data])
+        } catch (error) {
+            console.log('Error adding to history ',)
+        }
+    }
+
+    
+    const removeOldestFromHistory = async () => {
+        if (historyList.length === 0) return ;
+        const oldestHistory = historyList[0]
+
+        console.log('Remove oldest item from history', oldestHistory)
+        try {
+            const userId = await verifyToken(token)
+            const response = await fetch(
+                `http://localhost:4000/history/delete`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        _id: oldestHistory._id,
+                    }),
+                }                    
+            );
+            const data = await response.json()
+
+            if (response.ok) {
+                setHistoryList(historyList.filter(item => item._id !== oldestHistory._id));
+              } else {
+                console.log('Failed to delete history item:', await response.text());
+              }
+        } catch (error) {
+            console.log('Client: error deleting from history')
+        }
+    }
 
     const handlePlaceChanged1 = () => {
         const place = autocomplete1.getPlace();
@@ -149,6 +222,11 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
                     <Favourites
                         input1={input1}
                         onFavouriteSelect={handleFavouriteSelect}
+                    />
+                    <History 
+                        onHistorySelect={handleFavouriteSelect} 
+                        historyList={historyList} 
+                        setHistoryList={setHistoryList} 
                     />
                 </div>
             ) : (
