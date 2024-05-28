@@ -1,15 +1,9 @@
 import React, {useEffect, useState} from "react";
 import verifyToken from "../utilities/verifyToken";
 
-export const History = (onHistorySelect) => {
-
-    // Create a historic item
-    // Address, date
+export const History = ({onHistorySelect, historyList, setHistoryList}) => {
 
     const token = localStorage.getItem("token")
-    const [history, setHistory] = useState([])
-    // const [address, setAddress] = useState("")
-    // const [date, setDate] = useState("")
 
     useEffect(() => {
         const getHistory = async () => {
@@ -25,35 +19,39 @@ export const History = (onHistorySelect) => {
                     }
                 );
                 const data = await response.json()
-                setHistory(data)
+                setHistoryList(data)
             } catch (error) {
-                console.log('Error getting history: ', error)
+                console.log('Client: Error getting history: ', error)
             }
         }
         getHistory()
-    }, [history])
+    }, [])
+
 
     return (
         <div id="grid-item-history">
-            <h2>History</h2>
-            {history && 
-                history.map((his) => (
-                    <div 
-                    key={his._id}
-                    className="recents-item-container">
+            <h2 className="recents-title">History</h2>
+            <div className="history-container">
+                {historyList && 
+                    historyList.map((his) => (
                         <div 
-                            className="recents-item" 
-                            onClick={() => 
-                                onHistorySelect(his.address)
-                            }
-                        > </div>
-                        <p className="recent-items-text">
-                            {his.address.split(",")[0]}
-                        </p>
-                    </div>
-                )
-                )
-            }
+                            key={his._id}
+                            className="recents-item-container"
+                        >
+                            <div 
+                                className="recents-item" 
+                                onClick={() => 
+                                    onHistorySelect(his.address)
+                                }
+                            > </div>
+                            <p className="recent-items-text">
+                                {his.address.split(",")[0]}
+                            </p>
+                        </div>
+                    )
+                    )
+                }
+            </div>
         </div>
     )
 }

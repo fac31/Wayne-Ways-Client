@@ -25,7 +25,7 @@ body {
 .grid-template {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(9, 1fr);
+    grid-template-rows: repeat(12, 1fr);
 }
 
 #form-container {
@@ -200,7 +200,7 @@ body {
     background-color: rgb(135, 135, 135);
 }
 
-#grid-item-recents {
+#grid-item-recents, #grid-item-history {
     grid-column: 1 / span 8;
     grid-row: 4 / span 5;
     display: flex;
@@ -216,13 +216,17 @@ body {
     padding: 0vmin 2.5vmin 0 2.5vmin;
 }
 
+#grid-item-history {
+    grid-row: 9 / span 5;
+}
+
 .recents-title {
     font-size: 3.5vmin;
     margin-top: -1vh;
     color: rgba(0, 0, 0, 0.737);
 }
 
-.recents-container {
+.recents-container, .history-container {
     height: 80%;
     border-radius: 10px;
     background-color: white;
@@ -232,6 +236,10 @@ body {
     white-space: nowrap;
     max-width: 92vw;
     padding: 10px;
+}
+
+.history-container {
+    flex-direction: row-reverse;
 }
 
 .recents-item {
