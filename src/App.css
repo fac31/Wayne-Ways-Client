@@ -23,7 +23,7 @@ body {
 }
 
 
-#form-container {
+#form-container, #start-journey {
     display: flex;
     flex-direction: column;
     background-color: #eeeeeefb;
@@ -35,38 +35,58 @@ body {
     margin-top: 2px;
     margin-bottom: 5rem;
 }
-.grid-template {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 5rem;
-}
-#start-journey {
-    /* height: 28%; */
-    border-top: 1px solid rgb(153, 151, 151);
-    box-shadow: 0 4px 100px rgb(155, 155, 155);
+
+/* 
+    JOURNEY VIEW
+*/
+
+.top-strip {
+    height: 7vh;
+    border-bottom: 1px solid black;
+    box-shadow: 0 4px 100px rgb(0, 0, 0);
     z-index: 1;
-    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+#strip-p {
+    width: 100%;
+    padding-top: 1.5vh;
+    text-align: center;
+}
+
+#start-journey {
+    height: 28%;
+    padding: 1rem;
 }
 
 #start-journey-container {
-    grid-column: 1 / span 8;
-    grid-row: 2 / span 4;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 4vmin;
+    /* padding-left: 4vmin; */
 }
+
 
 .warnings {
 }
 
+.route-directions-container {
+    height: 10%;
+    background-color: whitesmoke;
+    color: black;
+}
+
+.distance-container {
+    margin: 1vh 0;
+    font-weight: 500;
+}
+
 #route-start-btns-container {
-    grid-column: 1 / span 8;
-    grid-row: 7 / span 4;
-    border-top: 1px solid rgb(218, 218, 218);
+    /* border-top: 1px solid rgb(116, 116, 116); */
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: auto;
 }
 
 #go-back-btn {
@@ -75,9 +95,9 @@ body {
     background-color: rgba(224, 224, 224, 0.684);
     border: none;
     border-radius: 20px;
-    margin-left: 7.5vw;
     color: rgba(6, 35, 255, 0.684);
     font-weight: 900;
+    margin: 0.5rem;
 }
 
 #go-btn {
@@ -86,16 +106,8 @@ body {
     background-color: rgba(6, 35, 255, 0.684);
     border: none;
     border-radius: 20px;
-    margin-right: 7.5vw;
     color: white;
     font-weight: 900;
-}
-
-.distance-container {
-    grid-column: 7 / span 2;
-    grid-row: 2 / span 1;
-    margin-top: 1vh;
-    font-weight: 500;
 }
 
 .form-variable {
@@ -171,20 +183,6 @@ body {
     background-color: rgb(204, 204, 204);
 }
 
-.top-strip {
-    height: 7vh;
-    border-bottom: 1px solid black;
-    box-shadow: 0 4px 100px rgb(0, 0, 0);
-    z-index: 1;
-    margin-bottom: 2px;
-}
-
-#strip-p {
-    width: 100%;
-    padding-top: 1.5vh;
-    text-align: center;
-}
-
 #submit-btn {
     border: none;
     background-color: transparent;
@@ -200,6 +198,10 @@ body {
     background-color: rgb(135, 135, 135);
 }
 
+
+/* 
+    SAVED ADDRESSES
+*/
 #favourites-1, #history {
     display: flex;
     flex-direction: column;
@@ -330,11 +332,6 @@ body {
     margin-top: -0.5vh;
 }
 
-.route-directions-container {
-    height: 10%;
-    background-color: whitesmoke;
-    color: black;
-}
 
 /* Loading Screen */
 
