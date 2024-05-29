@@ -36,16 +36,19 @@ export const History = ({onHistorySelect, historyList, setHistoryList}) => {
                     historyList.map((his) => (
                         <div 
                             key={his._id}
-                            className="saved-item-container"
-                        >
-                            <div 
-                                className="saved-item" 
+                            className="history-item-container"
                                 onClick={() => 
                                     onHistorySelect(his.address)
                                 }
-                            > </div>
+                        >
                             <p className="recent-items-text">
-                                {his.address.split(",")[0]}
+                                <img
+                                    src="/batman-logo.png"
+                                    alt="batman logo"
+                                    className="batman-logo-img"
+                                />
+                                {" "}
+                                {his.address.split(",").slice(0, -1)}
                             </p>
                         </div>
                     )
