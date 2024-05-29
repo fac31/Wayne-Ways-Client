@@ -47,7 +47,6 @@ export const History = ({onHistorySelect, historyList, setHistoryList}) => {
                                     alt="batman logo"
                                     className="batman-logo-img"
                                 />
-                                {" "}
                                 {his.address.split(",").slice(0, -1)}
                             </p>
                         </div>
