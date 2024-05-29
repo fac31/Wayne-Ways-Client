@@ -86,6 +86,21 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
     const addToHistory = async (address) => {
         try {
             const userId = await verifyToken(token)
+            const deleteAddress = await fetch(
+                `http://localhost:4000/history/deleteByAddress`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        address: address,
+                    }),
+                }   
+            )
+            const deletedData = await deleteAddress.json()
+
             const response = await fetch(
                 `http://localhost:4000/history/add`,
                 {
@@ -101,6 +116,7 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
                 }                
             );
             const data = await response.json()
+            
             setHistoryList([...historyList, data])
         } catch (error) {
             console.log('Error adding to history ',)
@@ -116,7 +132,7 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
         try {
             const userId = await verifyToken(token)
             const response = await fetch(
-                `http://localhost:4000/history/delete`,
+                `http://localhost:4000/history/deleteById`,
                 {
                     method: 'DELETE',
                     headers: {
