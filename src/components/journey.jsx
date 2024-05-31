@@ -7,6 +7,7 @@ import {
 import getLocation from '../utilities/getLocation';
 import formatTime from '../utilities/formatTime';
 import addMinutesToTime from '../utilities/addMinutesToTime';
+import '../css/journey.css';
 
 const mapContainerStyle = {
     height: '77.5%',

@@ -1,0 +1,49 @@
+#history {
+    display: flex;
+    flex-direction: column;
+    padding: 0vmin 2.5vmin 0 2.5vmin;
+    width: 100%;
+}
+
+.recents-title {
+    font-size: 4vmin;
+    margin-top: 1vh;
+    color: rgba(0, 0, 0, 0.737);
+}
+
+.history-container {
+    border-radius: 10px;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    white-space: nowrap;
+    max-width: 92vw;
+    padding: 10px;
+    flex-direction: row-reverse;
+}
+
+.saved-item-container {
+    margin: 0.5vh 0;
+    max-height: 100%;
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.saved-item {
+    height: 4rem;
+    width: 4rem;
+    border-radius: 50%;
+    background-color: rgba(238, 238, 238, 0.983);
+}
+
+.saved-item:hover {
+    background-color: rgb(181, 181, 181);
+}
+
+.recent-items-text {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}

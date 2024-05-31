@@ -22,8 +22,8 @@ export const Home = () => {
         console.log(newAddress);
     };
 
-    const token = localStorage.getItem('token');
-    verifyToken(token);
+    // const token = localStorage.getItem('token');
+    // verifyToken(token);
 
     return (
         <div className="full-height">
