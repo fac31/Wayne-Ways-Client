@@ -31,7 +31,7 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
         };
 
         getFavourites();
-    }, [favourites]);
+    }, []);
 
     const handlePlaceChanged = () => {
         const place = autocomplete.getPlace();
@@ -117,20 +117,36 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
                     </div>
                 ) : (
                     <>
+                        <div
+                            className="saved-item-container"
+                            onClick={() => setAddingFavourite(true)}
+                        >
+                            <div
+                                className="saved-item"
+                                id="fav-add-item">
+                            </div>
+                            <p 
+                                className="recent-items-text" 
+                                id='fav-items-text'>
+                                Add
+                            </p>
+                        </div>
                         {favourites &&
                             favourites.map((fav) => (
                                 <div
                                     key={fav._id}
-                                    className="saved-item-container"
+                                    className="saved-item-container" 
+                                    id='fav-item-container'
                                 >
-                                    <div
-                                        className="saved-item"
-                                        id='fav-item'
+                                    <img 
+                                        src="/joker.png"
+                                        alt="joker"
+                                        className="joker-img" 
                                         onClick={() =>
                                             onFavouriteSelect(fav.address)
                                         }
-                                    ></div>
-                                    <p className="recent-items-text">
+                                    />
+                                    <p className="recent-items-text" id='fav-text'>
                                         {fav.name}
                                         <img
                                             onClick={() => deleteFav(fav)}
@@ -141,16 +157,7 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
                                     </p>
                                 </div>
                             ))}
-                        <div
-                            className="saved-item-container"
-                            onClick={() => setAddingFavourite(true)}
-                        >
-                            <div
-                                className="saved-item"
-                                id="fav-add-item"
-                            ></div>
-                            <p className="recent-items-text">Add</p>
-                        </div>
+
                     </>
                 )}
             </div>
