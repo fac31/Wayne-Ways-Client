@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../css/authentication.css';
 
 const Auth = () => {
     const [email, setEmail] = useState('');
@@ -100,7 +101,9 @@ const Auth = () => {
         <div id="login-page-container">
             <h1 id="login-title">Wayne Ways</h1>
             <div className="login-container">
-                <h2 className="title">Welcome back</h2>
+                <h2 className="title">
+                    {loggingIn ? 'Welcome back' : 'Sign Up'}
+                </h2>
                 <form id="login-form" onSubmit={handleSubmit}>
                     <div className="mb-3">
                         <input
@@ -141,27 +144,27 @@ const Auth = () => {
                 </form>
             </div>
             {loggingIn ? (
-                <p className="signup-link-p">
+                <div className="signup-link-p">
                     Don't have an account?{''}
-                    <div
+                    <p
                         className="signup-link"
                         style={{ color: 'blue', textDecoration: 'underline' }}
                         onClick={() => signingUp()}
                     >
                         Sign Up
-                    </div>
-                </p>
+                    </p>
+                </div>
             ) : (
-                <p className="signup-link-p">
+                <div className="signup-link-p">
                     Already have an account with us?{' '}
-                    <div
+                    <p
                         className="signup-link"
                         style={{ color: 'blue', textDecoration: 'underline' }}
                         onClick={() => signingUp()}
                     >
                         Login
-                    </div>
-                </p>
+                    </p>
+                </div>
             )}
         </div>
     );

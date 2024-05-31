@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Autocomplete } from '@react-google-maps/api';
 import verifyToken from '../utilities/verifyToken';
+import '../css/favourites.css';
 
 export const Favourites = ({ input1, onFavouriteSelect }) => {
     const token = localStorage.getItem('token');
@@ -138,10 +139,9 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
                                     className="saved-item-container" 
                                     id='fav-item-container'
                                 >
-                                    <img 
-                                        src="/joker.png"
-                                        alt="joker"
-                                        className="joker-img" 
+                                    <div
+                                        className="saved-item"
+                                        id="fav-item"
                                         onClick={() =>
                                             onFavouriteSelect(fav.address)
                                         }
@@ -157,7 +157,13 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
                                     </p>
                                 </div>
                             ))}
-
+                        <div
+                            className="saved-item-container"
+                            onClick={() => setAddingFavourite(true)}
+                        >
+                            <div className="saved-item" id="fav-add-item"></div>
+                            <p className="recent-items-text">Add</p>
+                        </div>
                     </>
                 )}
             </div>

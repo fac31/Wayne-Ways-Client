@@ -1,0 +1,69 @@
+.route-directions-container {
+    height: 10%;
+    background-color: whitesmoke;
+    color: black;
+}
+
+#form-container,
+#start-journey {
+    display: flex;
+    flex-direction: column;
+    background-color: #eeeeeefb;
+    padding: 1vmin;
+    width: 100vw;
+    border-top: 1px solid rgb(116, 116, 116);
+    box-shadow: 0 4px 100px rgb(205, 205, 205);
+    z-index: 1;
+    margin-top: 2px;
+    margin-bottom: 5rem;
+}
+
+.top-strip {
+    height: 7vh;
+    border-bottom: 1px solid black;
+    box-shadow: 0 4px 100px rgb(0, 0, 0);
+    z-index: 1;
+    margin-bottom: 2px;
+}
+
+#strip-p {
+    width: 100%;
+    padding-top: 1.5vh;
+    text-align: center;
+}
+
+#start-journey {
+    height: 28%;
+    padding: 1rem;
+}
+
+#start-journey-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* padding-left: 4vmin; */
+}
+
+.warnings {
+}
+
+#go-back-btn {
+    width: 40vw;
+    height: 5vh;
+    background-color: rgba(224, 224, 224, 0.684);
+    border: none;
+    border-radius: 20px;
+    color: rgba(6, 35, 255, 0.684);
+    font-weight: 900;
+    margin: 0.5rem;
+}
+
+#go-btn {
+    width: 40vw;
+    height: 5vh;
+    background-color: rgba(6, 35, 255, 0.684);
+    border: none;
+    border-radius: 20px;
+    color: white;
+    font-weight: 900;
+}
