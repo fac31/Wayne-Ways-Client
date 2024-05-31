@@ -41,7 +41,12 @@ export const History = ({ onHistorySelect, historyList, setHistoryList }) => {
                                 {' '}
                             </div>
                             <p className="recent-items-text">
-                                {his.address.split(',')[0]}
+                                <img
+                                    src="/batman-logo.png"
+                                    alt="batman logo"
+                                    className="batman-logo-img"
+                                />
+                                {his.address.split(",").slice(0, -1)}
                             </p>
                         </div>
                     ))}

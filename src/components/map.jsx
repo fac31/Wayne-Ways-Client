@@ -14,6 +14,7 @@ const MapComponent = ({ origin, destination, onDirectionsUpdate }) => {
     const [currentLocation, setCurrentLocation] = useState(null);
     const [requestDirections, setRequestDirections] = useState(false);
     const [travelMode, setTravelMode] = useState('DRIVING');
+    
 
     const directionsCallback = useCallback(
         (response) => {
@@ -39,6 +40,7 @@ const MapComponent = ({ origin, destination, onDirectionsUpdate }) => {
     );
 
     useEffect(() => {
+
         const fetchData = async () => {
             try {
                 const position = await getLocation();
@@ -82,7 +84,7 @@ const MapComponent = ({ origin, destination, onDirectionsUpdate }) => {
             </div>
         );
     }
-
+console.log('latitude', latitude, 'longitude', longitude)
     return (
         <>
             {origin && destination ? (
@@ -106,6 +108,7 @@ const MapComponent = ({ origin, destination, onDirectionsUpdate }) => {
                     trafficControl: true,
                 }}
             >
+            <gmp-advanced-marker position={{latitude, longitude}} title="string"></gmp-advanced-marker>
                 {requestDirections && (
                     <DirectionsService
                         options={{

@@ -8,6 +8,7 @@ import getLocation from '../utilities/getLocation';
 import formatTime from '../utilities/formatTime';
 import addMinutesToTime from '../utilities/addMinutesToTime';
 import '../css/journey.css';
+import { resolvePath } from 'react-router-dom';
 
 const mapContainerStyle = {
     height: '77.5%',
@@ -101,13 +102,14 @@ const Journey = () => {
                 });
                 setMarker(newMarker);
             } else {
-                marker.setPosition(currentLocation);
+                marker.setPosition(currentLocation); 
             }
         }
     }, []);
-
+ 
     const directionsCallback = (response) => {
         if (response !== null && response.status === 'OK') {
+            // console.log('directionsCallback response ', response)
             setDirections(response);
             if (directionsRendererRef.current) {
                 const directionsRenderer = directionsRendererRef.current;
