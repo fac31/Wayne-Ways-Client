@@ -61,6 +61,8 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    height: 3rem;
+    width: 3rem;
 }
 
 .joker-img {
