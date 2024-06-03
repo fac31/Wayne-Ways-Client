@@ -131,7 +131,8 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
                                 id='fav-items-text'>
                                 Add
                             </p>
-                        </div>
+                        </div>                        
+                        
                         {favourites &&
                             favourites.map((fav) => (
                                 <div
@@ -139,12 +140,10 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
                                     className="saved-item-container" 
                                     id='fav-item-container'
                                 >
-                                    <div
-                                        className="saved-item"
-                                        id="fav-item"
-                                        onClick={() =>
-                                            onFavouriteSelect(fav.address)
-                                        }
+                                    <img 
+                                        src="/joker.png"
+                                        alt="joker logo"
+                                        className="joker-img" 
                                     />
                                     <p className="recent-items-text" id='fav-text'>
                                         {fav.name}
@@ -157,13 +156,7 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
                                     </p>
                                 </div>
                             ))}
-                        <div
-                            className="saved-item-container"
-                            onClick={() => setAddingFavourite(true)}
-                        >
-                            <div className="saved-item" id="fav-add-item"></div>
-                            <p className="recent-items-text">Add</p>
-                        </div>
+
                     </>
                 )}
             </div>
