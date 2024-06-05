@@ -6,6 +6,7 @@ import getLocation from '../utilities/getLocation';
 import Favourites from './favourites';
 import { History } from './history';
 import '../css/form.css';
+import geocodeAddress from '../utilities/getCoords';
 
 const Form = ({ onAddressSubmit, directionsData, destination }) => {
     const [autocomplete1, setAutocomplete1] = useState(null);
@@ -16,6 +17,7 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
     const [longitude, setLongitude] = useState(null);
     const [StartingJourney, setStartingJourney] = useState(false);
     const [historyList, setHistoryList] = useState([]);
+    const [trafficData, setTrafficData] = useState([]);
     const token = localStorage.getItem('token');
 
     useEffect(() => {
@@ -66,6 +68,8 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
             });
             setStartingJourney(true);
 
+            getTrafficData(place2.formatted_address);
+
             if (historyList.length <= 6) {
                 addToHistory(place2.formatted_address);
             } else {
@@ -79,9 +83,36 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
         }
     };
 
+    const getTrafficData = async (address) => {
+        const data = await geocodeAddress(address);
+        const lat2 = data.results[0].geometry.location.lat;
+        const lng2 = data.results[0].geometry.location.lng;
+        try {
+            const response = await fetch(
+                'http://localhost:4000/map-quest/traffic-data',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        lat1: latitude,
+                        lng1: longitude,
+                        lat2: lat2,
+                        lng2: lng2,
+                    }),
+                }
+            );
+            const data = await response.json();
+            setTrafficData(data.trafficCondition);
+        } catch (error) {
+            console.log('Error getting traffic data', error);
+        }
+    };
+
     const addToHistory = async (address) => {
         try {
-            const userId = await verifyToken(token)
+            const userId = await verifyToken(token);
             const deleteAddress = await fetch(
                 `http://localhost:4000/history/deleteByAddress`,
                 {
@@ -93,27 +124,24 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
                         userId: userId,
                         address: address,
                     }),
-                }   
-            )
-            const deletedData = await deleteAddress.json()
-
-            const response = await fetch(
-                `http://localhost:4000/history/add`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        userId: userId,
-                        address: address,
-                        date: Date.now()
-                    }),
-                }                
+                }
             );
-            const data = await response.json()
-            
-            setHistoryList([...historyList, data])
+            const deletedData = await deleteAddress.json();
+
+            const response = await fetch(`http://localhost:4000/history/add`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    address: address,
+                    date: Date.now(),
+                }),
+            });
+            const data = await response.json();
+
+            setHistoryList([...historyList, data]);
         } catch (error) {
             console.log('Error adding to history ');
         }
@@ -260,7 +288,7 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
                         <p style={{ fontSize: '4vmin', marginBottom: 0 }}>
                             -- {destination} --
                         </p>
-                        <p>Best route, typical traffic</p>
+                        <p>Best route, {trafficData}</p>
                         {directionsData &&
                             directionsData.warning?.length > 0 &&
                             directionsData.warning.map((dir, index) => (
