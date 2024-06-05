@@ -1,10 +1,11 @@
 import React from "react";
 import { Carousel } from 'react-bootstrap';
+import '../css/carousel.css';
 
 const DirectionCarousel = ({ steps }) => {
 
     return (
-        <Carousel interval={null}>
+        <Carousel className="carousel-slide" interval={null}>
             {steps.map((s, index) => (
                 <Carousel.Item key={index}>
                     <div className="p-4">
