@@ -139,6 +139,7 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
                                     key={fav._id}
                                     className="saved-item-container" 
                                     id='fav-item-container'
+                                    onClick={() => onFavouriteSelect(fav.address)}
                                 >
                                     <img 
                                         src="/joker.png"
