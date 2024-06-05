@@ -57,8 +57,6 @@
     width: 40vw;
     height: 5vh;
     background-color: rgba(224, 224, 224, 0.684);
-    /* border: none; */
-    border-radius: 10px;
     color: #263746;
     font-weight: 900;
     margin: 0.5rem;
@@ -68,16 +66,14 @@
     width: 40vw;
     height: 5vh;
     background-color: #263746;
-    /* border: none; */
-    border-radius: 10px;
     color: white;
     font-weight: 900;
 }
 
 .exit-journey-btn {
-    padding: 0.5rem 1rem;
+    height: 5vh;
+    padding: 0 1rem;
     margin: 0.5rem 0;
-    border-radius: 15px;
     align-self: flex-end;
     background-color: #263746;
     color: white;
