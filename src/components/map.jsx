@@ -6,6 +6,7 @@ import {
 } from '@react-google-maps/api';
 import getLocation from '../utilities/getLocation';
 import reverseGeocodeCoordinates from '../utilities/convertAddress';
+import '../css/map.css';
 
 const MapComponent = ({ origin, destination, onDirectionsUpdate }) => {
     const [response, setResponse] = useState(null);
@@ -88,7 +89,7 @@ console.log('latitude', latitude, 'longitude', longitude)
     return (
         <>
             {origin && destination ? (
-                <div className="top-strip">
+                <div className="map-top-strip">
                     <p id="strip-p">Your location -- {destination}</p>
                 </div>
             ) : (
