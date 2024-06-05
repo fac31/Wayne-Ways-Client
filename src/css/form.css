@@ -1,11 +1,10 @@
 #form-container {
     display: flex;
     flex-direction: column;
-    background-color: #eeeeeefb;
+    background-color: rgb(12,16,27);
     padding: 1vmin;
     width: 100vw;
     border-top: 1px solid rgb(116, 116, 116);
-    box-shadow: 0 4px 100px rgb(205, 205, 205);
     z-index: 1;
     margin-top: 2px;
     margin-bottom: 5rem;
@@ -51,9 +50,8 @@
     margin-top: 1vh;
     width: 35vh;
     padding: 2.5vmin;
-    border-radius: 10px;
+    border-radius: 5px;
     border: none;
-    background-color: rgb(204, 204, 204);
 }
 
 .add-inputs-container {
@@ -75,13 +73,13 @@
     border: none;
     background-color: rgb(204, 204, 204);
 }
-
 #submit-btn {
     border: none;
     background-color: transparent;
-    width: 12%;
+}
+.submit-icon {
+    width: 5vh;
     height: 5vh;
-    background-image: url('../../public/submit-icon.png');
     background-repeat: no-repeat;
     background-size: contain;
     margin-top: 0.3vh;

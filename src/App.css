@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Croissant+One&family=Happy+Monkey&family=Inconsolata:wght@200..900&family=Jacques+Francois+Shadow&family=Kanit:wght@500&family=Kumar+One&family=Oswald:wght@200&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik+Iso&family=Sedan+SC&family=Titillium+Web:wght@200&family=Victor+Mono:wght@100&family=Young+Serif&display=swap');
+
 body {
     height: 100vh;
+    background-color: rgb(12, 16, 27);
+    padding-bottom: 1rem;
 }
 
 #root {

@@ -40,7 +40,7 @@ export const History = ({ onHistorySelect, historyList, setHistoryList }) => {
                         >
                             <p className="recent-items-text">
                                 <img
-                                    src="/batman-logo.png"
+                                    src="/yellow-batman-icon.png"
                                     alt="batman logo"
                                     className="batman-logo-img"
                                 />

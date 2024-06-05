@@ -261,7 +261,12 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
                                 placeholder="Search WayneWays"
                             />
                         </Autocomplete>
-                        <button id="submit-btn" type="submit"></button>
+                        <button id="submit-btn" type="submit">
+                            <img 
+                                src="/right-arrow.png"
+                                alt="yellow-arrow-icon"
+                                className="submit-icon"/>
+                        </button>
                     </form>
                     <Favourites
                         input1={input1}

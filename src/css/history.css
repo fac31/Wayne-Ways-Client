@@ -3,11 +3,12 @@
     flex-direction: column;
     padding: 0vmin 2.5vmin 0 2.5vmin;
     width: 100%;
+    margin-bottom: 1rem;
 }
 .recents-title {
-    font-size: 4vmin;
+    font-size: 5vmin;
     margin-top: 1vh;
-    color: rgba(0, 0, 0, 0.737);
+    color: white;
 }
 
 .saved-item-container, .history-item-container {
@@ -20,9 +21,11 @@
 .history-container {
     display: flex;
     flex-direction: column-reverse;
+    padding-left: 0.3rem;
     padding-right: 1.5rem;
-    border-radius: 10px;
-    background-color: white;
+    border-radius: 5px;
+    background-color: #263746;
+    color: white;
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
@@ -35,13 +38,6 @@
 }
 .saved-item-container {
     margin: 0.5vh 2vh;
-}
-
-.saved-item {
-    height: 4rem;
-    width: 4rem;
-    border-radius: 50%;
-    background-color: rgba(238, 238, 238, 0.983);
 }
 
 .saved-item:hover {
@@ -57,7 +53,8 @@
     width: 100%;
 }
 .batman-logo-img {
-    height: 3vh;
-    width: 3vh;
-    margin-right: 1vh;
+    height: 4.5vh;
+    width: 4.5vh;
+    margin-left: 1vh;
+    margin-right: 2vh;
 }
