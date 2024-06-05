@@ -33,7 +33,9 @@ export const History = ({ onHistorySelect, historyList, setHistoryList }) => {
             <div className="history-container">
                 {historyList &&
                     historyList.map((his) => (
-                        <div key={his._id} className="history-item-container"
+                        <div 
+                            key={his._id} 
+                            className="history-item-container"
                             onClick={() => onHistorySelect(his.address)}
                         >
                             <p className="recent-items-text">

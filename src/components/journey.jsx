@@ -9,6 +9,7 @@ import formatTime from '../utilities/formatTime';
 import addMinutesToTime from '../utilities/addMinutesToTime';
 import '../css/journey.css';
 import { resolvePath } from 'react-router-dom';
+import DirectionCarousel from './carousel';
 
 const mapContainerStyle = {
     height: '77.5%',
@@ -16,7 +17,7 @@ const mapContainerStyle = {
 };
 
 const options = {
-    zoom: 18,
+    zoom: 16,
     mapTypeId: 'roadmap',
     trafficControl: true,
     styles: [
@@ -64,7 +65,7 @@ const Journey = () => {
     const [currentLocation, setCurrentLocation] = useState(null);
     const [directions, setDirections] = useState(null);
     const [index, setIndex] = useState(0);
-    const [step, setStep] = useState(null);
+    const [steps, setSteps] = useState([]);
     const [marker, setMarker] = useState(null);
     const [remainingDistance, setRemainingDistance] = useState(null);
     const [remainingTime, setRemainingTime] = useState(null);
@@ -111,6 +112,9 @@ const Journey = () => {
         if (response !== null && response.status === 'OK') {
             // console.log('directionsCallback response ', response)
             setDirections(response);
+            const steps = response.routes[0].legs[0].steps
+            setSteps(steps)
+
             if (directionsRendererRef.current) {
                 const directionsRenderer = directionsRendererRef.current;
                 directionsRenderer.setDirections(response);
@@ -118,6 +122,8 @@ const Journey = () => {
                 const route = response.routes[0];
                 const leg = route.legs[0];
             }
+        } else {
+            console.error('Directions request failed due to ', response.status)
         }
     };
 
@@ -235,11 +241,21 @@ const Journey = () => {
         // setStep(directionSteps[index]);
     }
 
+    const goBack = () => {
+        window.location.href = '/';
+    };
+
     return (
-        <div className="full-height" style={{ backgroundColor: 'black' }}>
-            <div className="route-directions-container">
-                <div className="route-directions"></div>
-            </div>
+        <div className="journey">
+            
+            {origin && destination ? (
+                <div className="journey-top-strip">
+                    <p id="strip-p">Your location -- {destination}</p>
+                </div>
+            ) : (
+                ''
+            )}
+
             <GoogleMap
                 id="direction-example"
                 mapContainerStyle={mapContainerStyle}
@@ -327,40 +343,31 @@ const Journey = () => {
                     })()}
             </GoogleMap>
             {remainingDistance !== null && remainingTime !== null && (
-                <div
-                    style={{
-                        height: '12.5%',
-                        background: '#333333',
-                        padding: '10px',
-                        color: 'white',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        borderTopLeftRadius: '10px',
-                        borderTopRightRadius: '10px',
-                    }}
-                >
-                    <div
-                        style={{
-                            fontSize: '7vmin',
-                            fontWeight: '900',
-                        }}
-                    >
-                        {addMinutesToTime(
-                            formattedTime,
-                            parseInt(parseFloat(remainingTime.toFixed(2)) * 100)
-                        )}
+                <div className='journey-details-container'>
+                    <div className='journey-intro'>
+                        <div className='journey-summary'>
+                            <div className='arrival-time'>
+                                {addMinutesToTime(
+                                    formattedTime,
+                                    parseInt(parseFloat(remainingTime.toFixed(2)) * 100)
+                                )}
+                            </div>
+                            <div className='journey-details'>
+                                {parseInt(parseFloat(remainingTime.toFixed(2)) * 100)}{' '}
+                                mins {'    ---   '}
+                                {parseInt(remainingDistance.toFixed(2))} km
+                            </div>
+                        </div>
+
+                        <button className='exit-journey-btn' 
+                            onClick={() => goBack()}>
+                                Exit journey
+                        </button>
+                    
                     </div>
-                    <div
-                        style={{
-                            fontWeight: '600',
-                            fontSize: '4.5vmin',
-                        }}
-                    >
-                        {parseInt(parseFloat(remainingTime.toFixed(2)) * 100)}{' '}
-                        mins {'    ---   '}
-                        {parseInt(remainingDistance.toFixed(2))} km
-                    </div>
+
+                    <DirectionCarousel steps={steps} />
+
                 </div>
             )}
         </div>
