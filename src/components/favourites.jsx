@@ -125,6 +125,10 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
                             <div
                                 className="saved-item"
                                 id="fav-add-item">
+                                    <img 
+                                        src="/white-building-outline.png"
+                                        alt="white building outline"
+                                        className="building-icon" />
                             </div>
                             <p 
                                 className="recent-items-text" 
