@@ -114,7 +114,10 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
                                 onChange={(e) => setAddress(e.target.value)}
                             />
                         </Autocomplete>
-                        <button onClick={() => addFavourite()}>Add</button>
+                        <button className='add-btn' 
+                            onClick={() => addFavourite()}>
+                                Add
+                        </button>
                     </div>
                 ) : (
                     <>
