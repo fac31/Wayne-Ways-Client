@@ -33,7 +33,7 @@ const Auth = () => {
     const fetchUser = async (email, funcPassword) => {
         try {
             const response = await fetch(
-                'http://localhost:4000/user/user/get',
+                `${process.env.REACT_APP_BACKEND_URL}/user/user/get`,
                 {
                     method: 'POST',
                     headers: {
@@ -71,16 +71,19 @@ const Auth = () => {
 
     const newSignup = async (email, password) => {
         try {
-            const response = await fetch('http://localhost:4000/user/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password,
-                }),
-            });
+            const response = await fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/user/users`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                    }),
+                }
+            );
             const data = await response.json();
             if (response.ok) {
                 localStorage.setItem('token', data.token);

@@ -10,7 +10,7 @@ export const History = ({ onHistorySelect, historyList, setHistoryList }) => {
             try {
                 const userId = await verifyToken(token);
                 const response = await fetch(
-                    `http://localhost:4000/history/get-all/${userId}`,
+                    `${process.env.REACT_APP_BACKEND_URL}/history/get-all/${userId}`,
                     {
                         method: 'GET',
                         headers: {
@@ -33,8 +33,8 @@ export const History = ({ onHistorySelect, historyList, setHistoryList }) => {
             <div className="history-container">
                 {historyList &&
                     historyList.map((his) => (
-                        <div 
-                            key={his._id} 
+                        <div
+                            key={his._id}
                             className="history-item-container"
                             onClick={() => onHistorySelect(his.address)}
                         >
@@ -44,7 +44,7 @@ export const History = ({ onHistorySelect, historyList, setHistoryList }) => {
                                     alt="batman logo"
                                     className="batman-logo-img"
                                 />
-                                {his.address.split(",").slice(0, -1)}
+                                {his.address.split(',').slice(0, -1)}
                             </p>
                         </div>
                     ))}

@@ -16,7 +16,7 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
             try {
                 const userId = await verifyToken(token);
                 const response = await fetch(
-                    `http://localhost:4000/favourites/get-all/${userId}`,
+                    `${process.env.REACT_APP_BACKEND_URL}/favourites/get-all/${userId}`,
                     {
                         method: 'GET',
                         headers: {
@@ -45,7 +45,7 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
         try {
             const userId = await verifyToken(token);
             const response = await fetch(
-                `http://localhost:4000/favourites/add`,
+                `${process.env.REACT_APP_BACKEND_URL}/favourites/add`,
                 {
                     method: 'POST',
                     headers: {
@@ -70,7 +70,7 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
         try {
             const userId = await verifyToken(token);
             const response = await fetch(
-                `http://localhost:4000/favourites/one`,
+                `${process.env.REACT_APP_BACKEND_URL}/favourites/one`,
                 {
                     method: 'DELETE',
                     headers: {
@@ -122,35 +122,40 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
                             className="saved-item-container"
                             onClick={() => setAddingFavourite(true)}
                         >
-                            <div
-                                className="saved-item"
-                                id="fav-add-item">
-                                    <img 
-                                        src="/white-building-outline.png"
-                                        alt="white building outline"
-                                        className="building-icon" />
+                            <div className="saved-item" id="fav-add-item">
+                                <img
+                                    src="/white-building-outline.png"
+                                    alt="white building outline"
+                                    className="building-icon"
+                                />
                             </div>
-                            <p 
-                                className="recent-items-text" 
-                                id='fav-items-text'>
+                            <p
+                                className="recent-items-text"
+                                id="fav-items-text"
+                            >
                                 Add
                             </p>
-                        </div>                        
-                        
+                        </div>
+
                         {favourites &&
                             favourites.map((fav) => (
                                 <div
                                     key={fav._id}
-                                    className="saved-item-container" 
-                                    id='fav-item-container'
-                                    onClick={() => onFavouriteSelect(fav.address)}
+                                    className="saved-item-container"
+                                    id="fav-item-container"
+                                    onClick={() =>
+                                        onFavouriteSelect(fav.address)
+                                    }
                                 >
-                                    <img 
+                                    <img
                                         src="/joker.png"
                                         alt="joker logo"
-                                        className="joker-img" 
+                                        className="joker-img"
                                     />
-                                    <p className="recent-items-text" id='fav-text'>
+                                    <p
+                                        className="recent-items-text"
+                                        id="fav-text"
+                                    >
                                         {fav.name}
                                         <img
                                             onClick={() => deleteFav(fav)}
@@ -161,7 +166,6 @@ export const Favourites = ({ input1, onFavouriteSelect }) => {
                                     </p>
                                 </div>
                             ))}
-
                     </>
                 )}
             </div>

@@ -89,7 +89,7 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
         const lng2 = data.results[0].geometry.location.lng;
         try {
             const response = await fetch(
-                'http://localhost:4000/map-quest/traffic-data',
+                `${process.env.REACT_APP_BACKEND_URL}/map-quest/traffic-data`,
                 {
                     method: 'POST',
                     headers: {
@@ -114,7 +114,7 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
         try {
             const userId = await verifyToken(token);
             const deleteAddress = await fetch(
-                `http://localhost:4000/history/deleteByAddress`,
+                `${process.env.REACT_APP_BACKEND_URL}/history/deleteByAddress`,
                 {
                     method: 'DELETE',
                     headers: {
@@ -128,17 +128,20 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
             );
             const deletedData = await deleteAddress.json();
 
-            const response = await fetch(`http://localhost:4000/history/add`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    userId: userId,
-                    address: address,
-                    date: Date.now(),
-                }),
-            });
+            const response = await fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/history/add`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        address: address,
+                        date: Date.now(),
+                    }),
+                }
+            );
             const data = await response.json();
 
             setHistoryList([...historyList, data]);
@@ -155,7 +158,7 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
         try {
             const userId = await verifyToken(token);
             const response = await fetch(
-                `http://localhost:4000/history/deleteById`,
+                `${process.env.REACT_APP_BACKEND_URL}/history/deleteById`,
                 {
                     method: 'DELETE',
                     headers: {
@@ -262,10 +265,11 @@ const Form = ({ onAddressSubmit, directionsData, destination }) => {
                             />
                         </Autocomplete>
                         <button id="submit-btn" type="submit">
-                            <img 
+                            <img
                                 src="/right-arrow.png"
                                 alt="yellow-arrow-icon"
-                                className="submit-icon"/>
+                                className="submit-icon"
+                            />
                         </button>
                     </form>
                     <Favourites
