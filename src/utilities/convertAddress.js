@@ -1,7 +1,7 @@
 export const reverseGeocodeCoordinates = async (latitude, longitude) => {
     try {
         const response = await fetch(
-            'http://localhost:4000/google/convert-address',
+            `${process.env.REACT_APP_BACKEND_URL}/google/convert-address`,
             {
                 method: 'POST',
                 headers: {
